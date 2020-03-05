@@ -10,28 +10,30 @@ class App extends React.Component {
     super(props);
     this.state = {
       events: [],
-      pageCount: 0
+      lastSearch: ''
     }
   }
   componentDidMount() {
-    this.searchEvents('');
+    this.searchEvents('', 0);
   }
-  handlePageClick() {
-
+  handlePageClick(e) {
+    console.log('page clicked on', e.selected+1);
+    this.searchEvents(this.state.lastSearch, e.selected+1);
   }
-  searchEvents(query) {
+  searchEvents(query, numPage) {
     console.log('searching...')
     axios.get('/events', {
       params: {
         q: query,
-        _page: this.state.pageCount,
-        _limit: 10,
+        _page: numPage,
+        _limit: 10
       },
     })
-    .then(response => {
+    .then((response) => {
       console.log('data', response.data);
       this.setState({
-        events: response.data
+        events: response.data,
+        lastSearch: query
       });
     })
     .catch(error => {
@@ -41,23 +43,25 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <div style={{textAlign: "center", fontSize: "25px", fontWeight: "bold"}}> Historical Event Finder</div>
+        <div id="title"> Historical Event Finder </div>
         <br></br>
         <Form searchEvents={this.searchEvents.bind(this)}></Form>
         <br></br>
         <EventList events={this.state.events}/>
         <ReactPaginate
-          pageCount={this.state.pageCount}
           pageRangeDisplayed={4}
           marginPagesDisplayed={2}
           previousLabel={'previous'}
           nextLabel={'next'}
           breakLabel={'...'}
-      />
+          onPageChange={this.handlePageClick.bind(this)}
+          breakClassName={'break-me'}
+          containerClassName={'pagination'}
+          subContainerClassName={'pages pagination'}
+          activeClassName={'active'}/>
       </div>
     )
   }
-
 }
 
 ReactDom.render(<App/>, document.getElementById('app'));

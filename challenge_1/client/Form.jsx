@@ -14,13 +14,12 @@ class Form extends React.Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    this.props.searchEvents(this.state.query);
+    this.props.searchEvents(this.state.query, 0);
   }
   render() {
     const {query} = this.state;
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}
-        style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+      <form onSubmit={this.handleSubmit.bind(this)}>
         <label>Search Events:</label>
         <input
           name='query'
