@@ -3,39 +3,28 @@ import ReactDom from 'react-dom';
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import EventList from './EventList.jsx';
+import Form from './Form.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       events: [],
-      query: '',
       pageCount: 0
     }
   }
   componentDidMount() {
     this.searchEvents('');
   }
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-
-  }
-  handleSubmit(e) {
-    console.log('submitted');
-    e.preventDefault();
-    this.searchEvents(this.state.query, this.state.pageCount)
-  }
   handlePageClick() {
 
   }
-  searchEvents(query, pageCount) {
+  searchEvents(query) {
     console.log('searching...')
     axios.get('/events', {
       params: {
         q: query,
-        _page: pageCount,
+        _page: this.state.pageCount,
         _limit: 10,
       },
     })
@@ -54,20 +43,17 @@ class App extends React.Component {
       <div>
         <div style={{textAlign: "center", fontSize: "25px", fontWeight: "bold"}}> Historical Event Finder</div>
         <br></br>
-        <form onSubmit={this.handleSubmit.bind(this)}
-        style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
-          <label>Search Events:</label>
-          <input
-            name='query'
-            type='text'
-            value={this.state.query}
-            onChange={this.handleChange.bind(this)}/>
-          <input
-            type='submit'
-            value='Search'/>
-        </form>
+        <Form searchEvents={this.searchEvents.bind(this)}></Form>
         <br></br>
         <EventList events={this.state.events}/>
+        <ReactPaginate
+          pageCount={this.state.pageCount}
+          pageRangeDisplayed={4}
+          marginPagesDisplayed={2}
+          previousLabel={'previous'}
+          nextLabel={'next'}
+          breakLabel={'...'}
+      />
       </div>
     )
   }
