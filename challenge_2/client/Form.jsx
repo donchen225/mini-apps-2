@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const Form = ({getBitcoinData, handleGraphChange}) => {
+const Form = ({handleDateChange, handleGraphChange}) => {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [graph, setGraph] = useState('');
@@ -19,8 +19,8 @@ const Form = ({getBitcoinData, handleGraphChange}) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    handleDateChange(start, end);
     handleGraphChange(graph);
-    getBitcoinData(start, end);
   }
 
   return (

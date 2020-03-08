@@ -10,13 +10,11 @@ import PieChart from './PieChart.jsx';
 const App = () => {
   const [data, setData] = useState({});
   const [graph, setGraph] = useState('');
+  const [start, setStart] = useState('');
+  const [end, setEnd] = useState('');
 
   useEffect(() => {
-    getBitcoinData();
-  }, [])
-
-  const getBitcoinData = (start, end) => {
-    console.log('successful in get bitcoin data');
+    console.log('Success in get data when start/ end is updated in state');
     axios.get('/bitcoin', {
       params:{ start: start, end: end }
     })
@@ -27,10 +25,16 @@ const App = () => {
     .catch((err) => {
       console.log(err);
     })
+  }, [start, end]);
+
+  const handleDateChange = (start, end) => {
+    console.log(`changed date range from ${start} to ${end}`);
+    setStart(start);
+    setEnd(end);
   }
 
   const handleGraphChange = (graph) => {
-    console.log('change to', graph);
+    console.log('change graph to', graph);
     setGraph(graph);
   }
 
@@ -39,7 +43,7 @@ const App = () => {
       <h2> Cryptocurrency Charting Tool </h2>
 
       <Form
-        getBitcoinData={getBitcoinData}
+        handleDateChange={handleDateChange}
         handleGraphChange={handleGraphChange}>
       </Form>
 
