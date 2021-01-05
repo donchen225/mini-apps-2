@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/dc2255221/hrsf125-mini-apps-2#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "json-server": "^0.16.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
